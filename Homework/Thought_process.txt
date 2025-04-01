@@ -1,0 +1,80 @@
+Ideas: 
+
+.NET 8.0 
+ASP.NET
+
+Data
+While only one retailer is mentioned could be used for several retailers
+
+Product
+- ID
+- Name string? (Tho at the same time people can just do some weird stuff with it, check for sql injections) 
+- Price double (Usual stuff with number checking, probably make long since idk could be something extra expensive, aka let's buy USA)
+- Amount int/long (In case of lack of supply, need to make an error check for this)
+- Retailer (Possibly use tokens for this?) 
+
+Discount
+- product ID 
+- % discount, since could be a % one
+- -price since could be a flat discount
+- Amount of produts purchased (Since probably want something like that) 
+- Enabled/Disabled
+- Created
+- Disabled (Nullable)
+
+Reports
+Query about the product
+- Discounted product 
+- ^ info on these 
+- Total amount 
+
+
+As a retailer I can create new product. Each product should have name and price.
+- Simple stuff ^
+As a retailer I can retrieve list of products. It should be possible to perform search by product name.
+- Cache products, query when needed
+As a retailer I can apply discount for product. 
+Discount has two settings: percentage value of discount and quantity of products from which discount will be applied.
+- Simple put/update
+- Possibly can have several discounts to a products, would need to have an ID
+- Enabled/Disabled, when, sort by enabled/disabled 
+- When applying discount to object find the best one for it
+-- Might need to cache this since would be a pain to do so, but at the same time this is the most human issue proof area so changing IDs could be good
+-- Tho could just do a cache that resets on an update since retailers would most likely be using the DB trough the 
+-- API and unless they call we wouldn't have access to it so DB direct changes shouldn't be an issue
+-- Tho adding a little thing that would be changing in the DB itself upong changing it could help, tho then would need to 
+-- continiously change things, most likely will be a point point for a bit. Need to see what I could do
+
+As a retailer I can create new order with list of products. 
+Each product should have quantity of items ordered.
+- Usual stuff, ID for products (Tbh the name would probably be the easiest but would require a few checks?) making it a bit more user friendly
+- For safe keeping probably should do two methods, possibly three since I imagine people would most likely be weird and reference items by either ID or their name, whichever is easiest
+- Add the number of products for the check, can be multiple
+- Could realistically just make 
+ 
+ Invoice temp: 
+ - ID
+ - String item name (Costs one less look up)
+ - ItemID
+ - Quanity
+ - DiscountID
+ - Discount (Since discount can change)
+ - Price
+
+ Order(Large)Temp:
+ - ID 
+ - List<OrderIDs>
+ - Price probably need to Query this, tho for convenience could be quite useful tho would cause problems while looking up.
+ Scaling issue, need to resolve
+
+As a retailer I can retrieve list of orders.
+
+As a retailer I can retrieve order invoice. 
+Invoice should contain list of products where each product has name, quantity, discount (%) (if applicable), 
+amount ($) and additionally show total amount ($) to pay for all products.
+
+As a retailer I can retrieve reports for each discounted product. 
+Report should show discounted product name, discount (%), number of orders 
+that includes this discounted product and total amount ($) ordered of this discounted product.
+
+Query trough invoices
